@@ -121,6 +121,10 @@ echo package main > main.go
 
 TODO: ディレクトリ構成
 
+```bash
+tree --dirsfirst
+```
+
 ## API仕様書
 
 エンドポイント、リクエストレスポンスの形式、その他情報のAPIの仕様書。
