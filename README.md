@@ -29,7 +29,7 @@ Docker-Desktopでコンテナーを立てて開発している
                 image: golang:1.22.2-bullseye  # pullするイメージ
                 container_name: ddd-api  # コンテナ名
                 ports:
-                    - "4561:4561" # ホストマシンのポートとコンテナのポートをマッピング
+                    - "4562:4561" # ホストマシンのポートとコンテナのポートをマッピング
                 environment:
                     TZ: ${TZ}
                 volumes:  # ボリュームの保持。
@@ -47,7 +47,7 @@ Docker-Desktopでコンテナーを立てて開発している
                 env_file: 
                     - .env
                 ports:
-                    - "3307:3306"  # ホストマシンのポートとコンテナのポートをマッピング
+                    - "3308:3306"  # ホストマシンのポートとコンテナのポートをマッピング
                 volumes:
                     - ./mysql_server/db-data:/var/lib/mysql
                 # build:
@@ -177,6 +177,7 @@ MYSQL_DATABASE=使用するdatabase名
 JWT_SECRET_KEY="openssl rand -base64 32"で作ったJWTトークン作成用のキー。
 JWT_TOKEN_LIFETIME=JWTトークンの有効期限
 MULTIPART_IMAGE_MAX_SIZE=Multipart/form-dataの画像の制限サイズ。10MBなら10485760
+REQ_BODY_MAX_SIZE=リクエストボディのマックスサイズ。50MBなら52428800
 ```
 
 ## TODO
