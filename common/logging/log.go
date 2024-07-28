@@ -1,0 +1,47 @@
+package logging
+
+import (
+	"log"
+	"time"
+)
+
+// 成功時のログをログファイルに残す
+func SuccessLog(successName string) {
+	log.Printf("Success LOG: %s\n", successName)
+	log.Printf("Time: %v\n\n", time.Now()) // 時刻
+}
+
+// エラー時のログをログファイルに残す
+func ErrorLog(errName string, err error) {
+	log.Printf("ERROR LOG: %s\n", errName)
+	log.Printf("Time: %v\n", time.Now()) // 時刻
+	if err != nil {
+		log.Printf("Error: %s\n\n", err)
+	} else {
+		log.Printf("Error: NIL")
+	}
+}
+
+// 情報の記録
+func InfoLog(title string, info string) {
+	log.Printf("INFO LOG: %s\n", title)
+	log.Printf("Time: %v\n", time.Now()) // 時刻
+	if info != "" {
+		log.Printf("Info: \n%s\n", info)
+		//log.Printf("Info: %s\n", info)
+	}
+}
+
+// 警告
+func WarningLog(title string, warning string) {
+	log.Printf("WARNING LOG: %s\n", title)
+	log.Printf("Time: %v\n", time.Now()) // 時刻
+	if warning != "" {
+		log.Printf("Warning: %s\n\n", warning)
+	}
+}
+
+// 単純なprintf
+func SimpleLog(str string) {
+	log.Print(str)
+}
