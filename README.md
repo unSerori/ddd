@@ -100,6 +100,23 @@ Docker-Desktopでコンテナーを立てて開発している
 
 4. サーバ起動
 
+参考までにgo-gin自体の環境構築は以下
+
+```bash:go-gin start-up
+# goがインストールされているコンテナイメージなのでgoインストールは不要
+
+# goモジュールの初期化
+go mod init ddd
+
+# ginのインストール
+go get -u github.com/gin-gonic/gin
+
+# main.goの作成
+echo package main > main.go
+```
+
+[goインストール方法](https://go.dev/doc/install)
+
 ## ディレクトリ構成
 
 TODO: ディレクトリ構成
