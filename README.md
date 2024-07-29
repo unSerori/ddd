@@ -125,6 +125,27 @@ TODO: ディレクトリ構成
 tree --dirsfirst
 ```
 
+## ※開発手順について
+
+0. 具体的な要件（:ビジネスルール）を最初に決める
+1. 次に具体的なビジネスロジックとしてdomain/entity.go, domain/logic.go, domain/repository.goに定義
+
+パターン1: 完全に下の層から書いていく: DDDの趣旨にはあってるのか。。？
+
+1. domain/repositoryで提供されているインターフェイスをinfrastructure層で実装、domain/logic.goから呼び出す
+2. application層でロジックを呼び出す
+3. presentation層で受け取りと完成したapplication層の処理を呼び出す
+4. routingに追加
+
+パターン2: 下から上の依存関係を登録し、上から処理書く: 開発途中でもエンドポイントに対するテストが行えるし、処理の流れを意識しながらコーディングできる
+
+1. まだ作ってないならファイル（4層分）作成と依存関係の登録
+2. 枠組みを上の層から書く
+    1. ルートに登録、presentation層でのリクエスト受け取りapplication層に処理渡しレスポンス返却
+    2. application層でのユースケースの流れ、ビジネスロジックの呼び出し
+    3. domain/repository.goで提供されているインターフェイスをinfrastructure層で実装
+    4. 全体の体裁を整える
+
 ## API仕様書
 
 エンドポイント、リクエストレスポンスの形式、その他情報のAPIの仕様書。
