@@ -14,7 +14,12 @@ func routing(engine *gin.Engine, handlers Handlers) {
 	engine.Use(middleware.LoggingMid())
 
 	// endpoints  // handlersを使って、作成済みの依存関係を利用
+
+	// root page
 	engine.GET("/", presentation.ShowRootPage) // /
+
+	// confirmation
+	engine.GET("/cfm_req", presentation.ConfirmationReq) // /cfm_req
 }
 
 // ファイルを設定

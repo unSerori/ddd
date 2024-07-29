@@ -1,0 +1,7 @@
+@base_url = http://localhost:4561
+@api_v = /v1
+@boundary = ----MyBoundary
+@jwt = jwt
+
+### テスト
+GET {{base_url}}/cfm_req HTTP/1.1
