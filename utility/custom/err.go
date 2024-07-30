@@ -1,6 +1,9 @@
-// ビジネスロジック内で発生したerrに名前を付けて返し、presentation側でswitchを使ったエラーハンドルをする
+// ビジネスロジック内で発生したerrやerrにしたい分岐に対して名前を付けて返し、presentation側でswitchを使ったエラーハンドルをする
+// switch分岐させたいエラーが出たときはNewErr()に紐づけたいエラー名とerr.Error()(:エラーmsg)を渡し、カスタムエラーを返す
+
+// ORMエラーはswitchで特定する必要があって肥大化するので、ロジックを書くべきビジネスロジックには書きたくないからinfrastructureに書く
+
 // 独自のエラー型構造体にはmsgとエラー型の情報を含む。エラー型情報も独自のタイプで、int管理のENUM
-// サービス内で、コントローラでswitch分岐させたいエラーが出たときはNewErrに紐づけたいエラー名とerr.Error()(:エラーmsg)を渡し、カスタムエラーを返す
 
 package custom
 
@@ -20,20 +23,25 @@ type ErrType int
 
 // エラーの種類を定義
 const ( // ========================ここに新しい独自のエラーを追加していく
-	ErrTypeCustom             ErrType = iota
-	ErrTypeHashingPassFailed          // ハッシュ化失敗
-	ErrTypeGenTokenFailed             // トークン作成失敗
-	ErrTypeNoResourceExist            // リソースが存在しない
-	ErrTypePassMismatch               // パスワードが一致しない
-	ErrTypePermissionDenied           // 権限がない
-	ErrTypeMaxAttemptsReached         // 最大試行回数に達した
-	ErrTypeInvalidFileFormat          // ファイル形式が無効
-	ErrTypeFileSizeTooLarge           // ファイルサイズがでか杉ます;~;
-	ErrTypeAlreadyExists              // すでに存在するので登録する必要がない&できない
-
+	ErrTypeCustom ErrType = iota
+	// ロジック内のエラーに発生させる独自エラー
+	ErrTypeHashingPassFailed  // ハッシュ化失敗
+	ErrTypeGenTokenFailed     // トークン作成失敗
+	ErrTypeNoResourceExist    // リソースが存在しない
+	ErrTypePassMismatch       // パスワードが一致しない
+	ErrTypeMaxAttemptsReached // 最大試行回数に達した
+	ErrTypeInvalidFileFormat  // ファイル形式が無効
+	ErrTypeFileSizeTooLarge   // ファイルサイズがでか杉ます;~;
+	ErrTypeAlreadyExists      // すでに存在するので登録する必要がない&できない
+	// ロジック内でエラーを返したい分岐で発生させる独自エラー
+	ErrTypePermissionDenied // 権限がない
+	ErrTypeTooYoung         // 年齢の下限を下回っている
+	ErrTypeTooLongPass      // パスワードが短すぎる
+	ErrTypeTooShortPass     // パスワードが長すぎる
+	// ORMエラー infrastructureでswitchを使って発生
 	ErrTypeOtherErrorsInTheORM       // ORMエラーでキャッチしきれなかったエラー
 	ErrTypeUniqueConstraintViolation // 一意性制約違反
-
+	// ORM操作の第一引数に対するエラーハンドルで発生
 	ErrTypeZeroEffectCUD // CUD処理の第一引数が0だったときの独自エラー
 	ErrTypeNoFoundR      // R処理の第一引数がfalse時の独自エラー
 )
@@ -44,11 +52,13 @@ var errTypeMsg = map[ErrType]string{
 	ErrTypeGenTokenFailed:     "",
 	ErrTypeNoResourceExist:    "could not find the relevant ID",
 	ErrTypePassMismatch:       "password does not match",
-	ErrTypePermissionDenied:   "do not have the necessary permissions",
 	ErrTypeMaxAttemptsReached: "maximum number of attempts reached",
 	ErrTypeInvalidFileFormat:  "", // 拡張子やバイナリなど特定方法が複数あるため逐一設定するほうがいい
 	ErrTypeFileSizeTooLarge:   "the file size exceeds the allowed limit",
 	ErrTypeAlreadyExists:      "no need to register as it already exists & cannot be done",
+
+	ErrTypePermissionDenied: "do not have the necessary permissions",
+	ErrTypeTooYoung:         "below the lower age limit",
 
 	ErrTypeOtherErrorsInTheORM:       "",
 	ErrTypeUniqueConstraintViolation: "Unique columns have been matched.",
