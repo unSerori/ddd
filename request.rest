@@ -3,5 +3,11 @@
 @boundary = ----MyBoundary
 @jwt = jwt
 
-### テスト
+### root page
+GET {{base_url}}/ HTTP/1.1
+
+### confirmation
 GET {{base_url}}/cfm_req HTTP/1.1
+
+### test
+GET {{base_url}}/test HTTP/1.1

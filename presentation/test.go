@@ -2,8 +2,10 @@ package presentation
 
 import (
 	"ddd/common/logging"
+	"fmt"
 	"net/http"
 	"time"
+	"unicode/utf8"
 
 	"github.com/gin-gonic/gin"
 )
@@ -27,4 +29,46 @@ func ConfirmationReq(c *gin.Context) {
 	logging.SimpleLog("body: ", c.Request.Body, "\n")
 	logging.SimpleLog("url query: ", c.Request.URL.Query(), "\n")
 	logging.SimpleLog("\n")
+}
+
+// test
+func Test(c *gin.Context) {
+	passes := []string{
+		"aaaaaaaaaaa",
+		"aaaaaaaaaaaa",
+		"aaaaaaaaaaaaa",
+		"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+		"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+		"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+
+		"あああああああああああああああああああああああ",
+		"ああああああああああああああああああああああああ",
+		"あああああああああああああああああああああああああ",
+	}
+
+	for _, pass := range passes {
+		fmt.Print(pass, ": ", len(pass), "\n")
+		fmt.Print(pass, ": ", utf8.RuneCountInString(pass), "\n")
+		fmt.Println()
+	}
+	// emails := []string{
+	// 	"hoge@gmail.com",
+	// 	"piyo.ta@gmail.com",
+	// 	"piyo-ta@gamil.com",
+	// 	"tyu320v9",
+	// 	"8898@g.c",
+	// 	"---@g.com",
+	// 	"hoge@piyo",
+	// 	"..@a",
+	// 	"a@.",
+	// }
+
+	// for _, email := range emails {
+	// 	_, err := mail.ParseAddress(email)
+	// 	if err != nil {
+	// 		fmt.Println(email + ": " + "no")
+	// 	} else {
+	// 		fmt.Println(email + ": " + "ok")
+	// 	}
+	// }
 }

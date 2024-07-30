@@ -20,6 +20,9 @@ func routing(engine *gin.Engine, handlers Handlers) {
 
 	// confirmation
 	engine.GET("/cfm_req", presentation.ConfirmationReq) // /cfm_req
+
+	// test
+	engine.GET("/test", presentation.Test) // /test
 }
 
 // ファイルを設定
