@@ -1,3 +1,5 @@
+// ユーザーインターフェース(:リクエストの受け取りとレスポンスの返却)
+
 package presentation
 
 import (

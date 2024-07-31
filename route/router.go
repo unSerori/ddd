@@ -23,6 +23,17 @@ func routing(engine *gin.Engine, handlers Handlers) {
 
 	// test
 	engine.GET("/test", presentation.Test) // /test
+
+	// ver1グループ
+	v1 := engine.Group("/v1")
+	{
+		// usersグループ
+		users := v1.Group("/users")
+		{
+			// ユーザー登録
+			users.POST("/register", handlers.UserHandler.RegisterUserHandler) // /v1/users/register
+		}
+	}
 }
 
 // ファイルを設定

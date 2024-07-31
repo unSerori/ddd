@@ -1,7 +1,7 @@
 // エンティティ
 package domain
 
-// エンティティとその値オブジェクト
+// エンティティとその値オブジェクトの構造体
 type User struct {
 	Name     string
 	Age      int
