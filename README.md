@@ -16,97 +16,51 @@ image Golang: go version go1.22.2 linux/amd64
 
 ## 環境構築
 
-Docker-Desktopでコンテナーを立てて開発している
-(この開発環境は一例であり、適宜読み替えてください。)
+[ddd-docker](https://github.com/unSerori/ddd-docker)を使ってDokcerコンテナーで開発・デプロイする形を想定している  
+インストール手順は[ddd-dockerのインストール項目](https://github.com/unSerori/ddd-docker/blob/main/README.md#インストール)に記載  
+cloneしてスクリプト実行で、自動的にコンテナー作成と開発環境（: またはデプロイ）を行う  
 
-1. dockerで環境を作る
-    1. Docker Desktopをインストール  [Docker Hub windows-install download](https://docs.docker.com/desktop/install/windows-install/)
-    2. compose.ymlを`./`直下に作成
+### 自前でのローカル環境構築
 
-        ```yml:compose.yml
-        services:  # コンポースするサービスたち
-            go_server:  # サービスの名前
-                image: golang:1.22.2-bullseye  # pullするイメージ
-                container_name: ddd-api  # コンテナ名
-                ports:
-                    - "4562:4561" # ホストマシンのポートとコンテナのポートをマッピング
-                environment:
-                    TZ: ${TZ}
-                volumes:  # ボリュームの保持。
-                    - ./go_server/ddd:/root/ddd
-                build:  # ビルド設定
-                    context: ./go_server  # ビルドプロセスが実行されるパス。
-                    dockerfile: Dockerfile  # Dockerfileのパス。
-                tty: true  # コンテナ内で対話的操作を可能
-            mysql_server: 
-                image: mysql:latest
-                container_name: ddd_server
-                restart: always
-                environment:
-                    TZ: ${TZ}
-                env_file: 
-                    - .env
-                ports:
-                    - "3308:3306"  # ホストマシンのポートとコンテナのポートをマッピング
-                volumes:
-                    - ./mysql_server/db-data:/var/lib/mysql
-                # build:
-                #     context: .
-                #     dockerfile: ./mysql_server/Dockerfile
-        ```
+1. [Goのインストール](https://go.dev/doc/install)
+2. このリポジトリをclone
 
-    3. `./go_server`を作成しDockerfileを`./go_server`に置く
-
-        ```Dockerfile:Dockerfile
-        # ベースイメージ
-        FROM golang:1.22.2-bullseye
-
-        # aptでパッケージリストの更新とgitインストール
-        RUN apt update && apt install -y git
-
-        # デバッガインストール
-        RUN go install github.com/go-delve/delve/cmd/dlv@latest
-        ```
-
-    4. .envを`./`直下に作成
-
-        ```env:.env
-        MYSQL_ROOT_PASSWORD: mysql_serverのルートユーザーパスワード: root
-        MYSQL_USER: ユーザー名: ddd_user
-        MYSQL_PASSWORD: MYSQL_USERのパスワード: ddd_pass
-        MYSQL_DATABASE: 使用するdatabase名: ddd_db
-        TZ: タイムゾーン: Asia/Tokyo
-        ```
-
-    5. VScodeでカレントディレクトリを開きDocker拡張機能（ms-azuretools.vscode-docker）を入れ、コマンドで起動
-
-        ```bash:compose build
-        docker compose up -d --build
-        ```
-
-    6. Dockerタブからgo_serverをアタッチ
-2. shareディレクトリ内で以下のコマンドを実行し拡張機能をインストール
-
-    ```bash:Build an environment
-    # vscode 拡張機能を追加　vscode-ext.txtにはプロジェクトごとに必要なものを追記している。  
-    cat vscode-ext.txt | while read line; do code --install-extension $line; done
+    ```bash
+    git clone https://github.com/unSerori/ddd
     ```
 
-3. ssh通信設定を行い、/root/ddd直下で以下のコマンドを打ちこのリポジトリをクローン
+3. [.env](#env)ファイルを作成
+4. 必要なパッケージの依存関係など
 
-    ```bash:clone
-    git clone git@github.com:unSerori/ddd.git　.
+    ```bash
+    go mod tidy
     ```
 
-4. [.env](#env)もらう
+5. プロジェクトを起動
 
-5. サーバ起動
+    ```bash
+    # 実行(VSCodeならF5keyで実行)
+    go run .
 
-参考までにgo-gin自体の環境構築は以下
+    # ワンファイルにビルド
+    go build -o output 
 
-```bash:go-gin start-up
-# goがインストールされているコンテナイメージなのでgoインストールは不要
+    # ビルドで生成されたファイルを実行
+    ./output
+    ```
 
+#### vscode-ext.txt
+
+Goのデバッグ用VS Code拡張機能や便利な拡張機能のリスト  
+以下のコマンドで一括インストールできる
+
+```bash
+cat vscode-ext.txt | while read line; do code --install-extension $line; done
+```
+
+#### おまけ: Goでプロジェクト作成時のコマンド
+
+```bash
 # goモジュールの初期化
 go mod init ddd
 
@@ -116,8 +70,6 @@ go get -u github.com/gin-gonic/gin
 # main.goの作成
 echo package main > main.go
 ```
-
-[goインストール方法](https://go.dev/doc/install)
 
 ## ディレクトリ構成
 
@@ -187,25 +139,20 @@ TODO: エンドポイント仕様
 
 </details>
 
-## SERVER ERROR MESSAGE
-
-サーバーレスポンスメッセージとして"srvResMsg"キーでメッセージを返す。  
-サーバーレスポンスステータスコードと合わせてデバックする。
-
 ## .ENV
 
 .evnファイルの各項目と説明
 
 ```env:.env
-MYSQL_USER=DBに接続する際のログインユーザ名
-MYSQL_PASSWORD=パスワード
-MYSQL_HOST=ログイン先のDBホスト名。dockerだとサービス名。
-MYSQL_PORT=ポート番号。dockerだとコンテナのポート。
-MYSQL_DATABASE=使用するdatabase名
-JWT_SECRET_KEY="openssl rand -base64 32"で作ったJWTトークン作成用のキー。
-JWT_TOKEN_LIFETIME=JWTトークンの有効期限
-MULTIPART_IMAGE_MAX_SIZE=Multipart/form-dataの画像の制限サイズ。10MBなら10485760
-REQ_BODY_MAX_SIZE=リクエストボディのマックスサイズ。50MBなら52428800
+MYSQL_USER=DBに接続する際のログインユーザ名: ddd_user
+MYSQL_PASSWORD=パスワード: ddd_pass
+MYSQL_HOST=ログイン先のDBホスト名。dockerだとサービス名。mysql-db-srv
+MYSQL_PORT=ポート番号（dockerだとコンテナのポート）: 3306
+MYSQL_DATABASE=使用するdatabase名: ddd_db
+JWT_SECRET_KEY="openssl rand -base64 32"で作ったJWTトークン作成用のキー
+JWT_TOKEN_LIFETIME=JWTトークンの有効期限: 315360000
+MULTIPART_IMAGE_MAX_SIZE=Multipart/form-dataの画像の制限サイズ（10MBなら10485760）: 10485760
+REQ_BODY_MAX_SIZE=リクエストボディのマックスサイズ（50MBなら52428800）: 52428800
 ```
 
 ## TODO
