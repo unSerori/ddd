@@ -29,17 +29,26 @@ SmaSurf Quick Search
 
 # addendum ===========
 
-# todo
-TODO*
+# Linux/Unix specific temporary files
+.nfs*
 
-# メモファイル
-memo.*
+# macOS specific system files
+.DS_Store
+.AppleDouble
+__MACOSX
 
-# .vscode
+# Windows specific system files
+Desktop.ini
+
+# Editor and IDE specific temporary or configuration files
+*.swp
+*.swo
+.idea/
 .vscode/
 
-# envファイル
+# env file
 .env
+*.env*
 
 # デバッグ時のファイル
 __debug_bin*
@@ -52,6 +61,12 @@ server.log
 
 # upload directory
 /upload/users/icons/*
+
+# todo
+TODO*
+
+# memo
+memo.txt
 
 # empty directory
 !.gitignore
