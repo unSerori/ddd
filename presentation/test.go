@@ -24,13 +24,33 @@ func ShowRootPage(c *gin.Context) {
 
 // cfmreq
 func ConfirmationReq(c *gin.Context) {
+	// サーバーデバッグコンソールで確認
 	logging.SimpleLog("method: ", c.Request.Method, "\n")
 	logging.SimpleLog("url: ", c.Request.URL, "\n")
-	// logging.SimpleLog("tls ver: ", c.Request.TLS.Version, "\n")
+	//logging.SimpleLog("tls ver: ", c.Request.TLS.Version, "\n")
 	logging.SimpleLog("header: ", c.Request.Header, "\n")
 	logging.SimpleLog("body: ", c.Request.Body, "\n")
 	logging.SimpleLog("url query: ", c.Request.URL.Query(), "\n")
 	logging.SimpleLog("\n")
+
+	// 成功ログ
+	logging.SuccessLog("JSON for testing.")
+	// レスポンス
+	resStatusCode := http.StatusOK
+	c.JSON(http.StatusOK, gin.H{ // bodyがJSON形式のレスポンスを返す
+		"srvResCode": http.StatusText(resStatusCode), // メッセージ
+		"srvResData": gin.H{
+			"message": "hello go server!",
+			"info": gin.H{
+				"method": c.Request.Method,
+				"url":    c.Request.URL,
+				//"tls ver":   c.Request.TLS.Version,
+				"header":    c.Request.Header,
+				"body":      c.Request.Body,
+				"url query": c.Request.URL.Query(),
+			},
+		}, // データ
+	})
 }
 
 // test

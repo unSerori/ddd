@@ -107,6 +107,66 @@ tree --dirsfirst
 
 ### エンドポインツ
 
+<details>
+  <summary>疎通確認するエンドポイント</summary>
+
+- **URL:** `/check/echo`
+- **メソッド:** GET
+- **説明:** エンドポイントにアクセスすると、その際のリクエスト情報をサーバーデバッグコンソールに流し、クライアント側にもJSON形式で返す
+- **リクエスト:**
+  - ヘッダー:
+  - ボディ:
+- **レスポンス:**
+  - ステータスコード: 200 OK
+    - ボディ:
+
+      ```json
+      {
+        "srvResMsg":  "OK",
+        "srvResData": {
+            "info": {
+              "body": {
+              },
+              "header": {
+              },
+              "method": "GET",
+              "url": {
+                "Scheme": "",
+                "Opaque": "",
+                "User": null,
+                "Host": "",
+                "Path": "/check/echo",
+                "RawPath": "",
+                "OmitHost": false,
+                "ForceQuery": false,
+                "RawQuery": "",
+                "Fragment": "",
+                "RawFragment": ""
+              },
+              "url query": {
+              }
+            },
+            "message": "hello go server!"
+        },
+      }
+      ```
+
+</details>
+
+<details>
+  <summary>開発時にサーバー内の処理を確認したい時にアクセスするエンドポイント</summary>
+
+- **URL:** `/check/sandbox`
+- **メソッド:** GET
+- **説明:** 開発時のサーバーで確認したい処理を実行するためのもの
+- **リクエスト:**
+  - ヘッダー:　実行に必要なさまざまな形式のヘッダー
+  - ボディ: 実行に必要なさまざまな形式のボディ値
+
+- **レスポンス:**
+
+</details>
+
 TODO: エンドポイント仕様
 
 ### API仕様書てんぷれ

@@ -18,11 +18,15 @@ func routing(engine *gin.Engine, handlers Handlers) {
 	// root page
 	engine.GET("/", presentation.ShowRootPage) // /
 
-	// confirmation
-	engine.GET("/cfm_req", presentation.ConfirmationReq) // /cfm_req
+	// checkグループ
+	check := engine.Group("/check")
+	{
+		// confirmation and response json test
+		check.GET("/echo", presentation.ConfirmationReq) // /check/echo
 
-	// test
-	engine.GET("/test", presentation.Test) // /test
+		// sandbox
+		check.GET("/sandbox", presentation.Test) // /check/sandbox
+	}
 
 	// ver1グループ
 	v1 := engine.Group("/v1")
