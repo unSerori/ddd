@@ -5,7 +5,6 @@ donjayamanne.githistory
 editorconfig.editorconfig
 grapecity.gc-excelviewer
 gruntfuggly.todo-tree
-ics.japanese-proofreading
 marp-team.marp-vscode
 ionutvmi.path-autocomplete
 ms-ceintl.vscode-language-pack-ja
