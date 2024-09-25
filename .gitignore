@@ -1,3 +1,5 @@
+## Pasted from gitignore.io
+
 # Created by https://www.toptal.com/developers/gitignore/api/go
 # Edit at https://www.toptal.com/developers/gitignore?templates=go
 
@@ -27,7 +29,7 @@ go.work
 # End of https://www.toptal.com/developers/gitignore/api/go
 SmaSurf Quick Search
 
-# addendum ===========
+## Environment-specific items
 
 # Linux/Unix specific temporary files
 .nfs*
@@ -46,15 +48,37 @@ Desktop.ini
 .idea/
 .vscode/
 
+## Generic items
+
 # env file
 .env
 *.env*
 
+# log
+*.log
+
+# back up
+*.bak
+
+# temp
+*.tmp
+
+# todo
+TODO*
+
+# memo
+memo.*
+
+## Docker-related items
+
+# volumes
+
+## Project-specific items
+
+# ライブラリなどリポジトリに含める必要のないディレクトリ
+
 # デバッグ時のファイル
 __debug_bin*
-
-# logging
-server.log
 
 # asset direcotry
 /asset/*/*
@@ -62,11 +86,7 @@ server.log
 # upload directory
 /upload/users/icons/*
 
-# todo
-TODO*
-
-# memo
-memo.txt
+## Others items
 
 # empty directory
 !.gitignore
