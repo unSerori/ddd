@@ -2,8 +2,8 @@
 package domain
 
 import (
+	"ddd/common/custom"
 	"ddd/common/logging"
-	"ddd/utility/custom"
 	"fmt"
 	"mime/multipart"
 	"net/http"
