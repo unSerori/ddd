@@ -1,6 +1,7 @@
 package logging
 
 import (
+	"ddd/utility"
 	"fmt"
 	"io"
 	"log"
@@ -11,7 +12,13 @@ var logFile *os.File // ログファイル
 
 // ログファイルを作成
 func openLogFile() error {
-	var err error
+	// ディレクトリを作成
+	err := utility.SafeMkdir("./common/logging", 0755, ErrorLog)
+	if err != nil {
+		return err
+	}
+
+	// ログファイルの作成
 	logFile, err = os.OpenFile("./common/logging/server.log", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
 	if err != nil { // エラーチェック
 		return fmt.Errorf("error opening file: %v", err) // エラーの場合
