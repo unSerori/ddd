@@ -1,7 +1,7 @@
 package auth
 
 import (
-	"ddd/utility/logging"
+	"ddd/common/logging"
 	"errors"
 	"fmt"
 	"time"

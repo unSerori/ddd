@@ -2,7 +2,7 @@
 package config
 
 import (
-	"ddd/utility/logging"
+	"ddd/common/logging"
 	"fmt"
 	"os"
 	"strconv"
